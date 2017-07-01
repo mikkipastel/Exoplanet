@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Exoplanet</string>
+    <string name="track_cover">cover</string>
+    <string name="track_name">Track</string>
+    <string name="track_size">size</string>
+
+    <string name="player_actionbar">Exoplayer</string>
+
+    <string name="about_actionbar">About</string>
+    <string name="about_header">ABOUT</string>
+    <string name="about_detail">This application is sample to show Exoplayer to play music
+        and will used firebase storage to stream music.\n\n
+    All song made by Lanuchpad, make your EDM music application by yourself.</string>
+    <string name="about_copyright">created by MikkiPastel</string>
+</resources>

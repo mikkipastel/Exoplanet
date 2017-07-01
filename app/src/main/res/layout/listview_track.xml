@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
+    android:padding="@dimen/card_dimen" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/card_dimen">
+
+        <ImageView
+            android:id="@+id/imageTrack"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:contentDescription="@string/track_cover"
+            android:src="@drawable/cover01" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/card_dimen"
+            android:layout_marginLeft="@dimen/card_dimen"
+            android:layout_marginRight="@dimen/card_dimen"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nameTrack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/activity_vertical_margin"
+                android:text="@string/track_name"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/track_font" />
+
+            <TextView
+                android:id="@+id/sizeTrack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:text="@string/track_size"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/size_font" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
