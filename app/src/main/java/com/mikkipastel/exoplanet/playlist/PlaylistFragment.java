@@ -1,25 +1,22 @@
 package com.mikkipastel.exoplanet.playlist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.mikkipastel.exoplanet.R;
-import com.mikkipastel.exoplanet.player.PlayerFragment;
+import com.mikkipastel.exoplanet.player.PlayerActivity;
 
-/**
- * Created by acer on 6/30/2017.
- */
+public class PlaylistFragment extends Fragment implements ItemListener{
 
-public class PlaylistFragment extends Fragment {
-
-    ListView songListView;
-    listAdapter adapter;
+    RecyclerView songListView;
+    RecyclerAdapter adapter;
 
     // sample to show before get from firebase storage
     int[] cover = {R.drawable.cover01,
@@ -53,22 +50,16 @@ public class PlaylistFragment extends Fragment {
     }
 
     public void initInstances(View rootView){
-        songListView = (ListView)rootView.findViewById(R.id.songlist);
-        adapter = new listAdapter(getContext(), cover, songname);
+        songListView = (RecyclerView) rootView.findViewById(R.id.songlist);
+
+        adapter = new RecyclerAdapter(this, getContext(), cover, songname);
+        songListView.setNestedScrollingEnabled(false);
+        songListView.setLayoutManager(new LinearLayoutManager(getActivity()
+                , LinearLayoutManager.VERTICAL
+                , false));
         songListView.setAdapter(adapter);
-
-        songListView.setOnItemClickListener(listViewItemClickListener);
+        adapter.notifyDataSetChanged();
     }
-
-    final AdapterView.OnItemClickListener listViewItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (position < cover.length){
-                PlayerFragment.FragmentListener listener = (PlayerFragment.FragmentListener) getActivity();
-                listener.onListItemClick(position);
-            }
-        }
-    };
 
     @Override
     public void onStart() {
@@ -98,5 +89,12 @@ public class PlaylistFragment extends Fragment {
         if (savedInstanceState != null) {
             // Restore Instance State here
         }
+    }
+
+    @Override
+    public void onClick(View v, int position) {
+        Intent intent = new Intent(getActivity(), PlayerActivity.class);
+        intent.putExtra(PlayerActivity.BUNDLE_POSITION, position);
+        startActivity(intent);
     }
 }

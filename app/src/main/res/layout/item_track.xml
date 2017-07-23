@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimaryLight"
     android:padding="@dimen/card_dimen" >
 
@@ -29,7 +29,7 @@
             <TextView
                 android:id="@+id/nameTrack"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="@dimen/activity_vertical_margin"
                 android:text="@string/track_name"
                 android:textColor="@color/colorText"
@@ -38,7 +38,7 @@
             <TextView
                 android:id="@+id/sizeTrack"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/activity_vertical_margin"
                 android:text="@string/track_size"
                 android:textColor="@color/colorText"
