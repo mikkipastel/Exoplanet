@@ -8,12 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mikkipastel.exoplanet.about.AboutActivity;
-import com.mikkipastel.exoplanet.player.PlayerActivity;
-import com.mikkipastel.exoplanet.player.PlayerFragment;
 import com.mikkipastel.exoplanet.playlist.PlaylistFragment;
 
-public class PlaylistActivity extends AppCompatActivity
-        implements PlayerFragment.FragmentListener{
+public class PlaylistActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +64,5 @@ public class PlaylistActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onListItemClick(int pos) {
-        Intent goPlayer = new Intent(PlaylistActivity.this, PlayerActivity.class);
-        goPlayer.putExtra("songTrack", pos);
-        startActivity(goPlayer);
     }
 }

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.mikkipastel.exoplanet.R;
 import com.mikkipastel.exoplanet.player.PlayerActivity;
 
-public class PlaylistFragment extends Fragment implements ItemListener{
+public class PlaylistFragment extends Fragment implements ItemListener {
 
     RecyclerView songListView;
     RecyclerAdapter adapter;
@@ -25,11 +25,13 @@ public class PlaylistFragment extends Fragment implements ItemListener{
             R.drawable.cover04,
             R.drawable.cover05};
 
-    String[] songname = {"Breaks 6-29-2560 BE, 12_31 PM.wav",
-            "Essential EDM 6-23-2560 BE, 5_24 PM.wav",
-            "Hip Hop 6-27-2560 BE, 7_12 PM.wav",
-            "House 2 6-28-2560 BE, 9_08 PM.wav",
-            "House 6-23-2560 BE, 5_43 PM.wav"};
+    public String[] songname = {"capsule_glitchstep.mp3",
+            "DataAnalysis_Glitchstep.mp3"};
+//            "Breaks 6-29-2560 BE, 12_31 PM.wav",
+//            "Essential EDM 6-23-2560 BE, 5_24 PM.wav",
+//            "Hip Hop 6-27-2560 BE, 7_12 PM.wav",
+//            "House 2 6-28-2560 BE, 9_08 PM.wav",
+//            "House 6-23-2560 BE, 5_43 PM.wav"};
 
     public PlaylistFragment() {
         super();
@@ -95,6 +97,7 @@ public class PlaylistFragment extends Fragment implements ItemListener{
     public void onClick(View v, int position) {
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
         intent.putExtra(PlayerActivity.BUNDLE_POSITION, position);
+        intent.putExtra(PlayerActivity.BUNDLE_FILENAME, songname[position]);
         startActivity(intent);
     }
 }

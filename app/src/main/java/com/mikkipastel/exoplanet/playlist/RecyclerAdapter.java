@@ -40,7 +40,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         // set cover and track name
         ViewHolder mHolder = (ViewHolder) holder;
-        mHolder.cover.setImageResource(mCover[position]);
+        mHolder.cover.setImageResource(mCover[position%5]);
         mHolder.name.setText(mSongName[position]);
         mHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
