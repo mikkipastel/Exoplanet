@@ -43,11 +43,6 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
     public static final int REPEAT_ONE = 1;
     public static final int REPEAT_ALL = 2;
 
-    public static final int POSITION_COVER = 0;
-    public static final int POSITION_FILENAME = 1;
-    public static final int POSITION_FILEPATH = 2;
-    public static final int POSITION_DURATION = 3;
-
     private SimpleExoPlayer player;
     private SimpleExoPlayerView playerView;
     private ComponentListener componentListener;
@@ -56,7 +51,8 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
     private int currentWindow;
 
     int position;
-    MusicList list;
+    int size;
+    List mList;
     String filepath;
 
     ImageView musicCover;
@@ -70,15 +66,18 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
     TextView exo_duration;
 
     boolean songplayed = true;
+    boolean repeatall = false;
 
     public MusicPlayerFragment() {
         super();
     }
 
-    public static MusicPlayerFragment newInstance(int position, MusicList list) {
+//    public static MusicPlayerFragment newInstance(int position, MusicList list) {
+    public static MusicPlayerFragment newInstance(int position, ArrayList<String> list) {
         MusicPlayerFragment fragment = new MusicPlayerFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(PlayerActivity.BUNDLE_MUSIC_LIST, list);
+//        bundle.putParcelable(PlayerActivity.BUNDLE_MUSIC_LIST, list);
+        bundle.putStringArrayList(PlayerActivity.BUNDLE_MUSIC_LIST, list);
         bundle.putInt(PlayerActivity.BUNDLE_POSITION, position);
         fragment.setArguments(bundle);
         return fragment;
@@ -104,9 +103,11 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
         repeat = rootView.findViewById(R.id.btn_repeat);
         repeat.setOnClickListener(this);
         skipPrevious = rootView.findViewById(R.id.btn_previous);
+        skipPrevious.setOnClickListener(this);
         play = rootView.findViewById(R.id.btn_play);
         play.setOnClickListener(this);
         skipNext = rootView.findViewById(R.id.btn_next);
+        skipNext.setOnClickListener(this);
         more = rootView.findViewById(R.id.btn_more);
 
         exo_position = rootView.findViewById(R.id.exo_position);
@@ -116,22 +117,28 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
 
         if (hasArgument(bundle)) {
             position = bundle.getInt(PlayerActivity.BUNDLE_POSITION);
-            list = bundle.getParcelable(PlayerActivity.BUNDLE_MUSIC_LIST);
+            mList = bundle.getStringArrayList(PlayerActivity.BUNDLE_MUSIC_LIST);
+            size = mList.size();
 
-            PlanetAssistance.setImageUrl(getContext(),
-                    list.getCover(),
-                    musicCover);
-            songname.setText(list.getFilename());
-            filepath = list.getUrl();
-            exo_duration.setText(list.getDuration());
+            setSongInPLayer(position);
         }
 
+    }
+
+    public void setSongInPLayer(int position) {
+        MusicList musicList = (MusicList) mList.get(position);
+        PlanetAssistance.setImageUrl(getContext(),
+                musicList.getCover(),
+                musicCover);
+        songname.setText(musicList.getFilename());
+        filepath = musicList.getUrl();
+        exo_duration.setText(musicList.getDuration());
     }
 
     private boolean hasArgument(Bundle bundle) {
         return bundle != null
                 && bundle.getInt(PlayerActivity.BUNDLE_POSITION) > -1
-                && bundle.getParcelable(PlayerActivity.BUNDLE_MUSIC_LIST) != null;
+                && bundle.getStringArrayList(PlayerActivity.BUNDLE_MUSIC_LIST) != null;
     }
 
     @Override
@@ -206,6 +213,22 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
             ClickToPlaySong();
         } else if (v == repeat) {
             ClickForRepeat();
+        } else if (v == skipNext) {
+            if (position < size - 1) {
+                position += 1;
+                setSongInPLayer(position);
+            } else if (position == size - 1 && repeatall) {
+                position = 0;
+                setSongInPLayer(position);
+            }
+        } else if (v == skipPrevious) {
+            if (position > 0) {
+                position -= 1;
+                setSongInPLayer(position);
+            } else if (position == 0 && repeatall) {
+                position = size - 1;
+                setSongInPLayer(position);
+            }
         }
     }
 
@@ -231,10 +254,14 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
             repeatMode = REPEAT_ALL;
             repeat.setImageResource(R.drawable.ic_repeat_white_24dp);
             player.setRepeatMode(Player.REPEAT_MODE_OFF);
+
+            repeatall = true;
         } else {
             repeatMode = REPEAT_NO;
             repeat.setImageResource(R.drawable.ic_repeat_black_24dp);
             player.setRepeatMode(Player.REPEAT_MODE_ALL);
+
+            repeatall = false;
         }
     }
 

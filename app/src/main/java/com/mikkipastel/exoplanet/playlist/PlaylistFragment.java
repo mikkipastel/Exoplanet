@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mikkipastel.exoplanet.R;
-import com.mikkipastel.exoplanet.player.MusicPlayerFragment;
 import com.mikkipastel.exoplanet.player.PlayerActivity;
 import com.mikkipastel.exoplanet.playlist.service.IMusicView;
 import com.mikkipastel.exoplanet.playlist.service.MusicList;
@@ -84,12 +83,10 @@ public class PlaylistFragment extends Fragment implements ItemListener, IMusicVi
 
     @Override
     public void onClick(View v, int position) {
-        MusicList items = (MusicList) mMusicList.get(position);
-
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(PlayerActivity.BUNDLE_POSITION, position);
-        bundle.putParcelable(PlayerActivity.BUNDLE_MUSIC_LIST, items);
+        bundle.putStringArrayList(PlayerActivity.BUNDLE_MUSIC_LIST, new ArrayList<String>(mMusicList));
         intent.putExtras(bundle);
         startActivity(intent);
     }
