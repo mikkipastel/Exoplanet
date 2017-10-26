@@ -5,10 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mikkipastel.exoplanet.R;
 
-/**
- * Created by acer on 6/30/2017.
- */
-
 public class AboutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

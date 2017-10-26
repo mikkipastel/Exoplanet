@@ -18,23 +18,20 @@ public class PlaylistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_playlist);
 
         if (savedInstanceState == null) {
-            //1st created
-            //place fragment
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, PlaylistFragment.newInstance())
                     .commit();
         }
 
         SharedPreferences prefs = getSharedPreferences("data_install", MODE_PRIVATE);
-        boolean insertBranch = prefs.getBoolean("install_status", false);
-        if (insertBranch) {
+
+        if (prefs.getBoolean("install_status", false)) {
             addShortcut();
         }
     }
 
     private void addShortcut() {
-        //Adding shortcut for MainActivity
-        //on Home screen
+        //Adding shortcut for MainActivity on Home screen
         Intent shortcutIntent = new Intent(getApplicationContext(), PlaylistActivity.class);
 
         shortcutIntent.setAction(Intent.ACTION_MAIN);

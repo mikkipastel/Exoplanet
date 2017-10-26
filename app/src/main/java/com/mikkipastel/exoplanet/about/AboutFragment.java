@@ -9,10 +9,6 @@ import android.view.ViewGroup;
 
 import com.mikkipastel.exoplanet.R;
 
-/**
- * Created by acer on 6/30/2017.
- */
-
 public class AboutFragment extends Fragment {
     public AboutFragment() {
         super();
@@ -28,12 +24,7 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_about, container, false);
-        initInstances(rootView);
         return rootView;
-    }
-
-    public void initInstances(View rootView){
-
     }
 
     @Override

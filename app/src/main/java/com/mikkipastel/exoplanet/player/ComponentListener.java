@@ -57,6 +57,11 @@ public class ComponentListener implements ExoPlayer.EventListener, VideoRenderer
     }
 
     @Override
+    public void onRepeatModeChanged(int repeatMode) {
+
+    }
+
+    @Override
     public void onPlayerError(ExoPlaybackException error) {
         // Do nothing.
     }

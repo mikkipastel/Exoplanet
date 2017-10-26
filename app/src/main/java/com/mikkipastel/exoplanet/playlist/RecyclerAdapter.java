@@ -8,40 +8,43 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.mikkipastel.exoplanet.PlanetAssistance;
 import com.mikkipastel.exoplanet.R;
+import com.mikkipastel.exoplanet.playlist.service.MusicList;
+
+import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    Context mContext;
-    int[] mCover;
-    String[] mSongName;
-
     ItemListener mListener;
+    Context mContext;
+    List mItems;
 
-    protected int mItemCount = 0;
-
-    public RecyclerAdapter(ItemListener listener, Context context, int[] cover, String[] songname){
-        this.mContext = context;
-        this.mCover = cover;
-        this.mSongName = songname;
-
+    public RecyclerAdapter(ItemListener listener, Context context, List items){
         this.mListener = listener;
+        this.mContext = context;
+        this.mItems = items;
     }
 
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_track, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        MusicList list = (MusicList) mItems.get(position);
+
         // set cover and track name
         ViewHolder mHolder = (ViewHolder) holder;
-        mHolder.cover.setImageResource(mCover[position%5]);
-        mHolder.name.setText(mSongName[position]);
+        PlanetAssistance.setImageUrl(mContext, list.getCover(), mHolder.cover);
+        mHolder.name.setText(list.getFilename());
         mHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,18 +60,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public ViewHolder(View view) {
             super(view);
-            cover = (ImageView)view.findViewById(R.id.imageTrack);
-            name = (TextView)view.findViewById(R.id.nameTrack);
+            cover = view.findViewById(R.id.imageTrack);
+            name = view.findViewById(R.id.nameTrack);
         }
     }
 
     @Override
     public int getItemCount() {
-        int itemCount = mItemCount;
-        if (itemCount == 0) {
-            itemCount = mSongName.length;
-        }
-        return itemCount;
+        return mItems != null ? mItems.size() : 0;
     }
 
 }

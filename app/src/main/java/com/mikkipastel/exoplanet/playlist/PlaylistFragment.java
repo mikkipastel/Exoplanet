@@ -9,29 +9,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mikkipastel.exoplanet.R;
+import com.mikkipastel.exoplanet.player.MusicPlayerFragment;
 import com.mikkipastel.exoplanet.player.PlayerActivity;
+import com.mikkipastel.exoplanet.playlist.service.IMusicView;
+import com.mikkipastel.exoplanet.playlist.service.MusicList;
+import com.mikkipastel.exoplanet.playlist.service.MusicPresenter;
 
-public class PlaylistFragment extends Fragment implements ItemListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class PlaylistFragment extends Fragment implements ItemListener, IMusicView {
 
     RecyclerView songListView;
     RecyclerAdapter adapter;
+    List mMusicList;
 
-    // sample to show before get from firebase storage
-    int[] cover = {R.drawable.cover01,
-            R.drawable.cover02,
-            R.drawable.cover03,
-            R.drawable.cover04,
-            R.drawable.cover05};
+    TextView status;
 
-    public String[] songname = {"capsule_glitchstep.mp3",
-            "DataAnalysis_Glitchstep.mp3"};
-//            "Breaks 6-29-2560 BE, 12_31 PM.wav",
-//            "Essential EDM 6-23-2560 BE, 5_24 PM.wav",
-//            "Hip Hop 6-27-2560 BE, 7_12 PM.wav",
-//            "House 2 6-28-2560 BE, 9_08 PM.wav",
-//            "House 6-23-2560 BE, 5_43 PM.wav"};
+    MusicPresenter mPresenter;
 
     public PlaylistFragment() {
         super();
@@ -47,57 +45,52 @@ public class PlaylistFragment extends Fragment implements ItemListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_playlist, container, false);
+
+        mPresenter = new MusicPresenter(this);
+        mPresenter.fetchMusic();
+
         initInstances(rootView);
         return rootView;
     }
 
     public void initInstances(View rootView){
-        songListView = (RecyclerView) rootView.findViewById(R.id.songlist);
-
-        adapter = new RecyclerAdapter(this, getContext(), cover, songname);
-        songListView.setNestedScrollingEnabled(false);
-        songListView.setLayoutManager(new LinearLayoutManager(getActivity()
-                , LinearLayoutManager.VERTICAL
-                , false));
-        songListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        songListView = rootView.findViewById(R.id.songlist);
+        status = rootView.findViewById(R.id.text_status);
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
+    public void onFetchSuccess(List<MusicList> musicLists) {
+        if (isAdded() && musicLists != null) {
+            songListView.setVisibility(View.VISIBLE);
+            status.setVisibility(View.GONE);
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
+            mMusicList = musicLists;
 
-    /*
-     * Save Instance State Here
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Save Instance State here
-    }
-
-    /*
-     * Restore Instance State Here
-     */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            // Restore Instance State here
+            adapter = new RecyclerAdapter(this, getContext(), musicLists);
+            songListView.setNestedScrollingEnabled(false);
+            songListView.setLayoutManager(new LinearLayoutManager(getActivity()
+                    , LinearLayoutManager.VERTICAL
+                    , false));
+            songListView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
     }
 
     @Override
+    public void onFetchFail() {
+        songListView.setVisibility(View.GONE);
+        status.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onClick(View v, int position) {
+        MusicList items = (MusicList) mMusicList.get(position);
+
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
-        intent.putExtra(PlayerActivity.BUNDLE_POSITION, position);
-        intent.putExtra(PlayerActivity.BUNDLE_FILENAME, songname[position]);
+        Bundle bundle = new Bundle();
+        bundle.putInt(PlayerActivity.BUNDLE_POSITION, position);
+        bundle.putParcelable(PlayerActivity.BUNDLE_MUSIC_LIST, items);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }
