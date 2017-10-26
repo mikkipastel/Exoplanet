@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight">
+
+    <ImageView
+        android:layout_margin="@dimen/card_dimen"
+        android:id="@+id/cover"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/cover_size"
+        android:layout_height="@dimen/cover_size"
+        android:src="@drawable/cover01"/>
+
+    <TextView
+        android:layout_margin="@dimen/card_dimen"
+        android:id="@+id/text_song"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SONG NAME"
+        android:textSize="@dimen/song_font"/>
+
+    <TextView
+        android:id="@+id/text_artist"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/artist"
+        android:textSize="@dimen/card_font"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp" >
+
+        <TextView
+            android:id="@id/exo_position"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="@dimen/timebar_dimens"
+            android:layout_marginStart="@dimen/timebar_dimens"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:text="00:00"/>
+
+        <com.google.android.exoplayer2.ui.DefaultTimeBar
+            android:id="@id/exo_progress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_toLeftOf="@id/exo_duration"
+            android:layout_toStartOf="@id/exo_duration"
+            android:layout_toRightOf="@id/exo_position"
+            android:layout_toEndOf="@id/exo_position" />
+
+        <TextView
+            android:id="@id/exo_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="@dimen/timebar_dimens"
+            android:layout_marginEnd="@dimen/timebar_dimens"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:text="04:32"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:baselineAligned="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_margin="@dimen/btn_margin"
+            android:id="@+id/btn_repeat"
+            android:src="@drawable/ic_repeat_black_24dp"
+            android:layout_width="@dimen/btn_size"
+            android:layout_height="@dimen/btn_size"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackground"/>
+        <ImageButton
+            android:layout_margin="@dimen/btn_margin"
+            android:layout_gravity="center"
+            android:id="@+id/btn_previous"
+            android:src="@drawable/ic_skip_previous_white_24dp"
+            android:layout_width="@dimen/btn_size"
+            android:layout_height="@dimen/btn_size"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackground"/>
+        <ImageButton
+            android:layout_margin="@dimen/btn_margin"
+            android:id="@+id/btn_play"
+            android:src="@drawable/ic_play_circle_outline_white_48dp"
+            android:layout_width="@dimen/btn_play_size"
+            android:layout_height="@dimen/btn_play_size"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackground"/>
+        <ImageButton
+            android:layout_margin="@dimen/btn_margin"
+            android:id="@+id/btn_next"
+            android:src="@drawable/ic_skip_next_white_24dp"
+            android:layout_width="@dimen/btn_size"
+            android:layout_height="@dimen/btn_size"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackground"/>
+        <ImageButton
+            android:layout_margin="@dimen/btn_margin"
+            android:id="@+id/btn_more"
+            android:src="@drawable/ic_more_vert_white_24dp"
+            android:layout_width="@dimen/btn_size"
+            android:layout_height="@dimen/btn_size"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackground"/>
+    </LinearLayout>
+
+
+</LinearLayout>
