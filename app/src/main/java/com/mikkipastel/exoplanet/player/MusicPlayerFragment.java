@@ -65,18 +65,16 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
     TextView exo_position;
     TextView exo_duration;
 
-    boolean songplayed = true;
+    boolean songplayed = false;
     boolean repeatall = false;
 
     public MusicPlayerFragment() {
         super();
     }
 
-//    public static MusicPlayerFragment newInstance(int position, MusicList list) {
     public static MusicPlayerFragment newInstance(int position, ArrayList<String> list) {
         MusicPlayerFragment fragment = new MusicPlayerFragment();
         Bundle bundle = new Bundle();
-//        bundle.putParcelable(PlayerActivity.BUNDLE_MUSIC_LIST, list);
         bundle.putStringArrayList(PlayerActivity.BUNDLE_MUSIC_LIST, list);
         bundle.putInt(PlayerActivity.BUNDLE_POSITION, position);
         fragment.setArguments(bundle);
