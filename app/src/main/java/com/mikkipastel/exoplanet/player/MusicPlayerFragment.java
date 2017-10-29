@@ -237,7 +237,7 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
                 setSongInPLayer(position);
             }
 
-            if (play.getTag().equals(R.drawable.ic_pause_circle_outline_white_48dp)) {
+            if (!songplayed) {
                 playSong();
             }
         }
