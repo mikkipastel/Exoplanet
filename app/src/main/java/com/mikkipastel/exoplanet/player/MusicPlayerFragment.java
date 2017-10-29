@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.TimeBar;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -31,6 +32,7 @@ import com.mikkipastel.exoplanet.PlanetAssistance;
 import com.mikkipastel.exoplanet.R;
 import com.mikkipastel.exoplanet.playlist.service.MusicList;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +64,8 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
     ImageButton skipNext;
     ImageButton play;
     ImageButton more;
-    TextView exo_position;
-    TextView exo_duration;
+
+    TimeBar mTimebar;
 
     boolean songplayed = false;
     boolean repeatall = false;
@@ -99,17 +101,17 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
         musicCover = rootView.findViewById(R.id.cover);
         songname = rootView.findViewById(R.id.text_song);
         repeat = rootView.findViewById(R.id.btn_repeat);
-        repeat.setOnClickListener(this);
         skipPrevious = rootView.findViewById(R.id.btn_previous);
-        skipPrevious.setOnClickListener(this);
         play = rootView.findViewById(R.id.btn_play);
-        play.setOnClickListener(this);
         skipNext = rootView.findViewById(R.id.btn_next);
-        skipNext.setOnClickListener(this);
         more = rootView.findViewById(R.id.btn_more);
 
-        exo_position = rootView.findViewById(R.id.exo_position);
-        exo_duration = rootView.findViewById(R.id.exo_duration);
+        mTimebar = rootView.findViewById(R.id.exo_progress);
+
+        repeat.setOnClickListener(this);
+        skipPrevious.setOnClickListener(this);
+        play.setOnClickListener(this);
+        skipNext.setOnClickListener(this);
 
         Bundle bundle = getArguments();
 
@@ -130,7 +132,11 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
                 musicCover);
         songname.setText(musicList.getFilename());
         filepath = musicList.getUrl();
-        exo_duration.setText(musicList.getDuration());
+
+//        mTimebar.setPosition(Time.valueOf("00:00:00").getTime());
+//        mTimebar.setBufferedPosition(1000);
+//        mTimebar.setDuration(Time.valueOf("00:04:32").getTime());
+
     }
 
     private boolean hasArgument(Bundle bundle) {
@@ -188,7 +194,6 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
     }
 
     private void releasePlayer() {
-        player.setPlayWhenReady(false);
         playbackPosition = player.getCurrentPosition();
         currentWindow = player.getCurrentWindowIndex();
         player.setPlayWhenReady(false);
@@ -219,6 +224,10 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
                 position = 0;
                 setSongInPLayer(position);
             }
+
+            if (!songplayed) {
+                playSong();
+            }
         } else if (v == skipPrevious) {
             if (position > 0) {
                 position -= 1;
@@ -227,18 +236,28 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
                 position = size - 1;
                 setSongInPLayer(position);
             }
+
+            if (play.getTag().equals(R.drawable.ic_pause_circle_outline_white_48dp)) {
+                playSong();
+            }
         }
+    }
+
+    public void playSong() {
+        MediaSource mediaSource = buildMediaSource(Uri.parse(filepath));
+        player.prepare(mediaSource);
+        player.setPlayWhenReady(true);
     }
 
     public void ClickToPlaySong() {
         if (songplayed) {
             play.setImageResource(R.drawable.ic_pause_circle_outline_white_48dp);
-            player.setPlayWhenReady(true);
+
+            playSong();
         } else {
             play.setImageResource(R.drawable.ic_play_circle_outline_white_48dp);
 
-            MediaSource mediaSource = buildMediaSource(Uri.parse(filepath));
-            player.prepare(mediaSource);
+            player.setPlayWhenReady(false);
         }
         songplayed = !songplayed;
     }
